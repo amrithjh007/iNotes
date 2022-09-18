@@ -264,9 +264,6 @@ extension ContentView {
                 for result in results {
                     titleArr.append(result.title ?? Constants.emptyString)
                 }
-            } else {
-                self.errorMessage = Constants.errorMessage
-                isShowAlert = true
             }
         } catch let error as NSError {
             let nsError = error as NSError
