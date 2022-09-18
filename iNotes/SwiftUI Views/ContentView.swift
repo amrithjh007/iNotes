@@ -88,7 +88,7 @@ struct ContentView: View {
                     }
                 } label: {
                     Text("Delete all")
-                }.disabled(items.isEmpty)
+                }.opacity(0)
             })
             .navigationTitle("iNotes")
             .navigationBarTitleDisplayMode(.automatic)

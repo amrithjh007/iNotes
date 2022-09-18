@@ -110,18 +110,15 @@
 		DBDCD9ED28D59F5C00915573 /* iNotes */ = {
 			isa = PBXGroup;
 			children = (
+				DBDCDA6C28D79B8A00915573 /* HelperClasses */,
+				DBDCDA6B28D79B8100915573 /* Service */,
+				DBDCDA6A28D79B7000915573 /* Persistence */,
+				DBDCDA6928D79B5500915573 /* SwiftUI Views */,
+				DBDCDA6828D79B4500915573 /* ListCell */,
+				DBDCDA6728D79B3100915573 /* Model */,
 				DBDCD9EE28D59F5C00915573 /* iNotesApp.swift */,
-				DBDCD9F028D59F5C00915573 /* ContentView.swift */,
 				DBDCD9F228D59F6000915573 /* Assets.xcassets */,
-				DBDCD9F728D59F6000915573 /* Persistence.swift */,
-				DBDCD9F928D59F6000915573 /* iNotes.xcdatamodeld */,
 				DBDCD9F428D59F6000915573 /* Preview Content */,
-				DBDCDA1D28D5A00600915573 /* iNotesModel.swift */,
-				DBDCDA1F28D5A25900915573 /* iNotesService.swift */,
-				DBDCDA2128D5A6FF00915573 /* iNotesDetail.swift */,
-				DBDCDA2328D5ACCD00915573 /* iNotesCell.swift */,
-				DBDCDA2528D5F8C400915573 /* iNoteAdd.swift */,
-				DBDCDA6228D6525500915573 /* ImagePicker.swift */,
 			);
 			path = iNotes;
 			sourceTree = "<group>";
@@ -149,6 +146,57 @@
 				DBDCDA1028D59F6000915573 /* iNotesUITestsLaunchTests.swift */,
 			);
 			path = iNotesUITests;
+			sourceTree = "<group>";
+		};
+		DBDCDA6728D79B3100915573 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DBDCDA1D28D5A00600915573 /* iNotesModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DBDCDA6828D79B4500915573 /* ListCell */ = {
+			isa = PBXGroup;
+			children = (
+				DBDCDA2328D5ACCD00915573 /* iNotesCell.swift */,
+			);
+			path = ListCell;
+			sourceTree = "<group>";
+		};
+		DBDCDA6928D79B5500915573 /* SwiftUI Views */ = {
+			isa = PBXGroup;
+			children = (
+				DBDCDA2128D5A6FF00915573 /* iNotesDetail.swift */,
+				DBDCDA2528D5F8C400915573 /* iNoteAdd.swift */,
+				DBDCD9F028D59F5C00915573 /* ContentView.swift */,
+			);
+			path = "SwiftUI Views";
+			sourceTree = "<group>";
+		};
+		DBDCDA6A28D79B7000915573 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				DBDCD9F728D59F6000915573 /* Persistence.swift */,
+				DBDCD9F928D59F6000915573 /* iNotes.xcdatamodeld */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		DBDCDA6B28D79B8100915573 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				DBDCDA1F28D5A25900915573 /* iNotesService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		DBDCDA6C28D79B8A00915573 /* HelperClasses */ = {
+			isa = PBXGroup;
+			children = (
+				DBDCDA6228D6525500915573 /* ImagePicker.swift */,
+			);
+			path = HelperClasses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

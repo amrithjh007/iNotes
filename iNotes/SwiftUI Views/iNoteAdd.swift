@@ -15,6 +15,7 @@ struct iNoteAdd: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var showImagePicker: Bool = false
     @State var image: Data? = nil
+    @State var imageIsSelected: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10){
@@ -42,6 +43,7 @@ struct iNoteAdd: View {
             ImagePicker(sourceType: .photoLibrary) { image in
                 //self.image = Image(uiImage: image)
                 self.image = image.pngData()
+                imageIsSelected = true
             }
         }
         .navigationTitle("Add Notes")
@@ -52,6 +54,8 @@ struct iNoteAdd: View {
                 } label: {
                     Image(systemName: "plus")
                 }
+                .background(imageIsSelected ? .green : .clear)
+                .clipShape(Capsule())
                 
                 Button {
                     print("Save button was tapped")
@@ -62,7 +66,7 @@ struct iNoteAdd: View {
                     }
                 } label: {
                     Text("Save")
-                }
+                }.disabled(title.isEmpty ? true : false)
             }
         }
     }
