@@ -2,7 +2,7 @@
 //  ImagePicket.swift
 //  iNotes
 //
-//  Created by C2075387 on 18/09/22.
+//  Created by Amrith on 18/09/22.
 //
 
 import Foundation

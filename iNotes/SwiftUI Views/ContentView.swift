@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  iNotes
 //
-//  Created by C2075387 on 17/09/22.
+//  Created by Amrith on 17/09/22.
 //
 
 import SwiftUI
@@ -19,12 +19,14 @@ struct ContentView: View {
     private var items: FetchedResults<Item>
     @StateObject var service = iNotesService()
     @State var enableAddNote: Bool = false
-    @State private var isAnimating = false
+    @State private var isAnimating: Bool = false
+    @State private var isShowAlert: Bool = false
+    @State private var errorMessage: String = ""
     
     var foreverAnimation: Animation {
-           Animation.linear(duration: 2.0)
-               .repeatForever(autoreverses: false)
-       }
+        Animation.linear(duration: 2.0)
+            .repeatForever(autoreverses: false)
+    }
     
     private var columns: [GridItem] = [
         GridItem(.flexible(minimum: 100)),
@@ -38,46 +40,17 @@ struct ContentView: View {
         NavigationView {
             ZStack(alignment: .bottomTrailing){
                 ScrollView{
-                    LazyVGrid(columns: columns, spacing: 5) {
-                        ForEach(items) { item in
-                            NavigationLink {
-                                if let item = item{
-                                    if item.title != nil && item.title != ""{
-                                        iNotesDetail(service: self.service, title: item.title ?? "", bodyString: item.body ?? "", createdTime: Int(item.createdTime), imageUI: loadImage(notesImageData: item.imageData))
-                                    }
-                                }
-                            } label: {
-                                if let item = item{
-                                    if item.title != nil && item.title != ""{
-                                        iNotesCell(title: item.title ?? "", createdTime: Int(item.createdTime))
-                                            .background(colorArray.randomElement())
-                                            .cornerRadius(10)
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    lazyGridView()
                 }
-                Button {
-                    enableAddNote.toggle()
-                } label: {
-                    Image(systemName: "plus")
-                        .foregroundColor(.white)
-                        .rotationEffect(Angle(degrees: self.isAnimating ? 360 : 0.0))
-                                            .animation(self.isAnimating ? foreverAnimation : .default, value: self.isAnimating)
-                                            .onAppear { self.isAnimating = true }
-                                            .onDisappear { self.isAnimating = false }
-                }
-                .scaleEffect(enableAddNote ? 1.5 : 1.0)
-                .frame(width: 50, height: 50)
-                .buttonStyle(PlainButtonStyle())
-                .background(Color.gray)
-                .clipShape(Capsule())
-                .padding(.trailing, 15)
-                .scaledToFill()
+                addNewNoteView()
                 NavigationLink.init("", isActive: $enableAddNote) {
                     iNoteAdd(service: self.service)
                 }
+            }
+            .alert(isPresented: $isShowAlert){
+                Alert(title: Text(""), message: Text(self.errorMessage), dismissButton: .default(Text("OK"), action: {
+                    self.isShowAlert = false
+                }))
             }
             .toolbar(content: {
                 Button {
@@ -107,9 +80,53 @@ struct ContentView: View {
             }
         })
         .preferredColorScheme(.dark)
-        
     }
     
+    @ViewBuilder func lazyGridView() -> some View {
+        LazyVGrid(columns: columns, spacing: 5) {
+            ForEach(items) { item in
+                NavigationLink {
+                    if let item = item{
+                        if item.title != nil && item.title != ""{
+                            iNotesDetail(service: self.service, title: item.title ?? "", bodyString: item.body ?? "", createdTime: Int(item.createdTime), imageUI: loadImage(notesImageData: item.imageData))
+                        }
+                    }
+                } label: {
+                    if let item = item{
+                        if item.title != nil && item.title != ""{
+                            iNotesCell(title: item.title ?? "", createdTime: Int(item.createdTime))
+                                .background(colorArray.randomElement())
+                                .cornerRadius(10)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder func addNewNoteView() -> some View {
+        Button {
+            enableAddNote.toggle()
+        } label: {
+            Image(systemName: "plus")
+                .foregroundColor(.white)
+                .rotationEffect(Angle(degrees: self.isAnimating ? 360 : 0.0))
+                .animation(self.isAnimating ? foreverAnimation : .default, value: self.isAnimating)
+                .onAppear { self.isAnimating = true }
+                .onDisappear { self.isAnimating = false }
+        }
+        .scaleEffect(enableAddNote ? 1.5 : 1.0)
+        .frame(width: 50, height: 50)
+        .buttonStyle(PlainButtonStyle())
+        .background(Color.gray)
+        .clipShape(Capsule())
+        .padding(.trailing, 15)
+        .scaledToFill()
+    }
+}
+
+extension ContentView{
+    //MARK: Convert Data to UIImage
     func loadImage(notesImageData: Data?) -> UIImage {
         if let imgData = notesImageData{
             return fetchImage(imageData: imgData)
@@ -131,7 +148,6 @@ struct ContentView: View {
         var imageData: Data = Data()
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
-            print(response?.suggestedFilename ?? url.lastPathComponent)
             imageData = data
             completionHandler(imageData)
         }
@@ -165,6 +181,21 @@ struct ContentView: View {
         return true
     }
     
+    //Check if App is launched for first time
+    func isAppAlreadyLaunchedOnce()->Bool{
+        let defaults = UserDefaults.standard
+        if defaults.bool(forKey: "isAppAlreadyLaunchedOnce"){
+            return true
+        }else{
+            defaults.set(true, forKey: "isAppAlreadyLaunchedOnce")
+            return false
+        }
+    }
+}
+
+extension ContentView {
+    //MARK: Core data methods
+    //Save values to Entity
     func addItem(notes: iNotesModel) {
         withAnimation {
             let newItem = Item(context: viewContext)
@@ -181,14 +212,14 @@ struct ContentView: View {
             do {
                 try viewContext.save()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                self.errorMessage = nsError.localizedDescription
+                isShowAlert = true
             }
         }
     }
     
+    //Delete all values from Entity
     private func resetAllRecords(in entity : String, completionHandler: @escaping ( _ isSuccess: Bool) -> Void)
     {
         let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
@@ -200,11 +231,14 @@ struct ContentView: View {
         }
         catch
         {
-            print ("There was an error")
+            let nsError = error as NSError
+            self.errorMessage = nsError.localizedDescription
+            isShowAlert = true
         }
         completionHandler(true)
     }
     
+    //Delete values at particular indexSet
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             offsets.map { items[$0] }.forEach(viewContext.delete)
@@ -212,65 +246,39 @@ struct ContentView: View {
             do {
                 try viewContext.save()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                self.errorMessage = nsError.localizedDescription
+                isShowAlert = true
             }
         }
     }
     
+    //Print all titles of values present
     func printAllValues() -> [String]{
         var titleArr: [String] = []
         do {
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Item")
-            
             request.returnsObjectsAsFaults = false
-            
             let results = try viewContext.fetch(request) as [Item]
             if (results.count > 0) {
                 for result in results {
                     titleArr.append(result.title ?? "")
                 }
             } else {
-                print("No Users")
+                self.errorMessage = "No data found"
+                isShowAlert = true
             }
         } catch let error as NSError {
-            // failure
-            print("Fetch failed: \(error.localizedDescription)")
+            let nsError = error as NSError
+            self.errorMessage = nsError.localizedDescription
+            isShowAlert = true
         }
         return titleArr
     }
-    
-    func isAppAlreadyLaunchedOnce()->Bool{
-            let defaults = UserDefaults.standard
-            
-            if defaults.bool(forKey: "isAppAlreadyLaunchedOnce"){
-                print("App already launched : \(isAppAlreadyLaunchedOnce)")
-                return true
-            }else{
-                defaults.set(true, forKey: "isAppAlreadyLaunchedOnce")
-                print("App launched first time")
-                return false
-            }
-        }
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView().environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
     }
-}
-
-extension UIScreen{
-    static let screenWidth = UIScreen.main.bounds.size.width
-    static let screenHeight = UIScreen.main.bounds.size.height
-    static let screenSize = UIScreen.main.bounds.size
 }

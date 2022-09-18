@@ -2,7 +2,7 @@
 //  iNotesTests.swift
 //  iNotesTests
 //
-//  Created by C2075387 on 17/09/22.
+//  Created by Amrith on 17/09/22.
 //
 
 import XCTest

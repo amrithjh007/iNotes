@@ -2,7 +2,7 @@
 //  iNoteAdd.swift
 //  iNotes
 //
-//  Created by C2075387 on 17/09/22.
+//  Created by Amrith on 17/09/22.
 //
 
 import SwiftUI
@@ -58,7 +58,6 @@ struct iNoteAdd: View {
                 .clipShape(Capsule())
                 
                 Button {
-                    print("Save button was tapped")
                     service.addNote(title: title, bodyString: bodyString, image: image){ isSuccess in
                         if isSuccess {
                             self.presentationMode.wrappedValue.dismiss()
