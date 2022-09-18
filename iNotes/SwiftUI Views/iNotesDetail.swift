@@ -14,32 +14,52 @@ struct iNotesDetail: View {
     var bodyString: String
     var createdTime: Int
     var imageUI: UIImage
+    @State private var displayImage: Bool = false
     
     var body: some View {
         ScrollView{
             VStack(alignment: .leading, spacing: 10){
-                
                 if checkIfImageIsAvailable(image: imageUI) {
-                    Image(uiImage: imageUI)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+                    withAnimation {
+                        imageView()
+                            .scaleEffect(displayImage ? 5 : 1)
+                            .animation(.linear(duration: 1), value: 5)
+                    }
                 }
-                
-                Text(title)
-                    .font(.title)
-                    .bold()
-                    .padding([.leading, .trailing], 15)
-                
-                Text(service.convertIntToDateString(inputTime: createdTime))
-                    .font(.subheadline)
-                    .padding([.leading, .trailing], 15)
-                
-                Text(.init(bodyString))
-                    .font(.title3.leading(.loose))
-                    .padding([.leading, .trailing], 15)
-                    .lineSpacing(20)
+                textView()
+                    .opacity(displayImage ? 0 : 1)
+            }
+            .sheet(isPresented: $displayImage) {
+                displayImage = false
+            } content: {
+                iNotesPhotoDisplay(image: imageUI)
             }
         }
+    }
+    
+    @ViewBuilder func textView() -> some View {
+        Text(title)
+            .font(.title)
+            .bold()
+            .padding([.leading, .trailing], 15)
+        
+        Text(service.convertIntToDateString(inputTime: createdTime))
+            .font(.subheadline)
+            .padding([.leading, .trailing], 15)
+        
+        Text(.init(bodyString))
+            .font(.title3.leading(.loose))
+            .padding([.leading, .trailing], 15)
+            .lineSpacing(20)
+    }
+    
+    @ViewBuilder func imageView() -> some View {
+        Image(uiImage: imageUI)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .onTapGesture {
+                displayImage = true
+            }
     }
     
     func checkIfImageIsAvailable(image: UIImage?) -> Bool{

@@ -23,4 +23,5 @@ struct Constants {
     static let save = "Save"
     static let url = "https://raw.githubusercontent.com/RishabhRaghunath/JustATest/master/notes"
     static let dateFormat = "MMM d, YYYY"
+    static let done = "Done"
 }

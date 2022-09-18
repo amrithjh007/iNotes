@@ -23,6 +23,7 @@
 		DBDCDA2628D5F8C500915573 /* iNoteAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDA2528D5F8C400915573 /* iNoteAdd.swift */; };
 		DBDCDA6328D6525500915573 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDA6228D6525500915573 /* ImagePicker.swift */; };
 		DBDCDA6E28D7A33100915573 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDA6D28D7A33100915573 /* Constants.swift */; };
+		DBDCDA7028D7A8DC00915573 /* iNotesPhotoDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDA6F28D7A8DC00915573 /* iNotesPhotoDisplay.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		DBDCDA2528D5F8C400915573 /* iNoteAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iNoteAdd.swift; sourceTree = "<group>"; };
 		DBDCDA6228D6525500915573 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		DBDCDA6D28D7A33100915573 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = iNotes/Modifier/Constants.swift; sourceTree = SOURCE_ROOT; };
+		DBDCDA6F28D7A8DC00915573 /* iNotesPhotoDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = iNotesPhotoDisplay.swift; path = iNotes/Modifier/iNotesPhotoDisplay.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +174,7 @@
 				DBDCDA2128D5A6FF00915573 /* iNotesDetail.swift */,
 				DBDCDA2528D5F8C400915573 /* iNoteAdd.swift */,
 				DBDCD9F028D59F5C00915573 /* ContentView.swift */,
+				DBDCDA6F28D7A8DC00915573 /* iNotesPhotoDisplay.swift */,
 			);
 			path = "SwiftUI Views";
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 				DBDCDA2428D5ACCD00915573 /* iNotesCell.swift in Sources */,
 				DBDCDA2628D5F8C500915573 /* iNoteAdd.swift in Sources */,
 				DBDCDA6328D6525500915573 /* ImagePicker.swift in Sources */,
+				DBDCDA7028D7A8DC00915573 /* iNotesPhotoDisplay.swift in Sources */,
 				DBDCD9EF28D59F5C00915573 /* iNotesApp.swift in Sources */,
 				DBDCDA2228D5A6FF00915573 /* iNotesDetail.swift in Sources */,
 			);
