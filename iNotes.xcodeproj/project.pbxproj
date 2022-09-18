@@ -22,6 +22,7 @@
 		DBDCDA2428D5ACCD00915573 /* iNotesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDA2328D5ACCD00915573 /* iNotesCell.swift */; };
 		DBDCDA2628D5F8C500915573 /* iNoteAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDA2528D5F8C400915573 /* iNoteAdd.swift */; };
 		DBDCDA6328D6525500915573 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDA6228D6525500915573 /* ImagePicker.swift */; };
+		DBDCDA6E28D7A33100915573 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDA6D28D7A33100915573 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		DBDCDA2328D5ACCD00915573 /* iNotesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iNotesCell.swift; sourceTree = "<group>"; };
 		DBDCDA2528D5F8C400915573 /* iNoteAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iNoteAdd.swift; sourceTree = "<group>"; };
 		DBDCDA6228D6525500915573 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		DBDCDA6D28D7A33100915573 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = iNotes/Modifier/Constants.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				DBDCDA6228D6525500915573 /* ImagePicker.swift */,
+				DBDCDA6D28D7A33100915573 /* Constants.swift */,
 			);
 			path = HelperClasses;
 			sourceTree = "<group>";
@@ -330,6 +333,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBDCD9F828D59F6000915573 /* Persistence.swift in Sources */,
+				DBDCDA6E28D7A33100915573 /* Constants.swift in Sources */,
 				DBDCDA2028D5A25900915573 /* iNotesService.swift in Sources */,
 				DBDCDA1E28D5A00600915573 /* iNotesModel.swift in Sources */,
 				DBDCD9FB28D59F6000915573 /* iNotes.xcdatamodeld in Sources */,

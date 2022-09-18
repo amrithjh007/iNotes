@@ -29,7 +29,7 @@ struct iNotesCell: View {
 
 struct iNotesCell_Previews: PreviewProvider {
     static var previews: some View {
-        iNotesCell(title: "", createdTime: 0)
+        iNotesCell(title: Constants.emptyString, createdTime: 0)
     }
 }
 

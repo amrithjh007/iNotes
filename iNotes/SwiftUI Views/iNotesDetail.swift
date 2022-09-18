@@ -54,6 +54,6 @@ struct iNotesDetail: View {
 
 struct iNotesDetail_Previews: PreviewProvider {
     static var previews: some View {
-        iNotesDetail(service: iNotesService(), title: "", bodyString: "", createdTime: 0, imageUI: UIImage())
+        iNotesDetail(service: iNotesService(), title: Constants.emptyString, bodyString:  Constants.emptyString, createdTime: 0, imageUI: UIImage())
     }
 }

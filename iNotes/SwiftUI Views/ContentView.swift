@@ -21,7 +21,7 @@ struct ContentView: View {
     @State var enableAddNote: Bool = false
     @State private var isAnimating: Bool = false
     @State private var isShowAlert: Bool = false
-    @State private var errorMessage: String = ""
+    @State private var errorMessage: String = Constants.emptyString
     
     var foreverAnimation: Animation {
         Animation.linear(duration: 2.0)
@@ -43,27 +43,27 @@ struct ContentView: View {
                     lazyGridView()
                 }
                 addNewNoteView()
-                NavigationLink.init("", isActive: $enableAddNote) {
+                NavigationLink.init(Constants.emptyString, isActive: $enableAddNote) {
                     iNoteAdd(service: self.service)
                 }
             }
             .alert(isPresented: $isShowAlert){
-                Alert(title: Text(""), message: Text(self.errorMessage), dismissButton: .default(Text("OK"), action: {
+                Alert(title: Text(Constants.emptyString), message: Text(self.errorMessage), dismissButton: .default(Text(Constants.ok), action: {
                     self.isShowAlert = false
                 }))
             }
             .toolbar(content: {
                 Button {
-                    resetAllRecords(in: "Item") { isSuccess in
+                    resetAllRecords(in: Constants.entity) { isSuccess in
                         if isSuccess {
                             service.notesList.removeAll()
                         }
                     }
                 } label: {
-                    Text("Delete all")
+                    Text(Constants.deleteAll)
                 }.opacity(0)
             })
-            .navigationTitle("iNotes")
+            .navigationTitle(Constants.iNotes)
             .navigationBarTitleDisplayMode(.automatic)
         }
         .onAppear {
@@ -87,14 +87,14 @@ struct ContentView: View {
             ForEach(items) { item in
                 NavigationLink {
                     if let item = item{
-                        if item.title != nil && item.title != ""{
-                            iNotesDetail(service: self.service, title: item.title ?? "", bodyString: item.body ?? "", createdTime: Int(item.createdTime), imageUI: loadImage(notesImageData: item.imageData))
+                        if item.title != nil && item.title != Constants.emptyString{
+                            iNotesDetail(service: self.service, title: item.title ?? Constants.emptyString, bodyString: item.body ?? Constants.emptyString, createdTime: Int(item.createdTime), imageUI: loadImage(notesImageData: item.imageData))
                         }
                     }
                 } label: {
                     if let item = item{
-                        if item.title != nil && item.title != ""{
-                            iNotesCell(title: item.title ?? "", createdTime: Int(item.createdTime))
+                        if item.title != nil && item.title != Constants.emptyString{
+                            iNotesCell(title: item.title ?? Constants.emptyString, createdTime: Int(item.createdTime))
                                 .background(colorArray.randomElement())
                                 .cornerRadius(10)
                         }
@@ -108,7 +108,7 @@ struct ContentView: View {
         Button {
             enableAddNote.toggle()
         } label: {
-            Image(systemName: "plus")
+            Image(systemName: Constants.plus)
                 .foregroundColor(.white)
                 .rotationEffect(Angle(degrees: self.isAnimating ? 360 : 0.0))
                 .animation(self.isAnimating ? foreverAnimation : .default, value: self.isAnimating)
@@ -155,9 +155,9 @@ extension ContentView{
     
     //MARK: Convert Image/Image String to Data
     func loadDataFromURL(notes: iNotesModel, completion: @escaping (_ isSuccess: Data) -> ()) {
-        if notes.image != "" && notes.image != nil {
+        if notes.image != Constants.emptyString && notes.image != nil {
             var data = Data()
-            if let url = URL(string: notes.image ?? "") {
+            if let url = URL(string: notes.image ?? Constants.emptyString) {
                 downloadImage(from: url) { imgdata in
                     data = imgdata
                     if checkIfImageIsAvailable(image: UIImage(data: data)) {
@@ -184,10 +184,10 @@ extension ContentView{
     //Check if App is launched for first time
     func isAppAlreadyLaunchedOnce()->Bool{
         let defaults = UserDefaults.standard
-        if defaults.bool(forKey: "isAppAlreadyLaunchedOnce"){
+        if defaults.bool(forKey: Constants.appLaunch){
             return true
         }else{
-            defaults.set(true, forKey: "isAppAlreadyLaunchedOnce")
+            defaults.set(true, forKey: Constants.appLaunch)
             return false
         }
     }
@@ -257,15 +257,15 @@ extension ContentView {
     func printAllValues() -> [String]{
         var titleArr: [String] = []
         do {
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Item")
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.entity)
             request.returnsObjectsAsFaults = false
             let results = try viewContext.fetch(request) as [Item]
             if (results.count > 0) {
                 for result in results {
-                    titleArr.append(result.title ?? "")
+                    titleArr.append(result.title ?? Constants.emptyString)
                 }
             } else {
-                self.errorMessage = "No data found"
+                self.errorMessage = Constants.errorMessage
                 isShowAlert = true
             }
         } catch let error as NSError {

@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct iNoteAdd: View {
-    @State var title : String = ""
-    @State var bodyString : String = ""
-    @State var placeHolderText: String = "TypeSomething..."
+    @State var title : String = Constants.emptyString
+    @State var bodyString : String = Constants.emptyString
+    @State var placeHolderText: String = Constants.placeHolder
     @StateObject var service = iNotesService()
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var showImagePicker: Bool = false
@@ -19,7 +19,7 @@ struct iNoteAdd: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10){
-            TextField("Title",text: $title)
+            TextField(Constants.title,text: $title)
                 .padding()
                 .font(.title)
                 .onReceive(title.publisher.collect()) {
@@ -41,18 +41,17 @@ struct iNoteAdd: View {
             }
         } .sheet(isPresented: $showImagePicker) {
             ImagePicker(sourceType: .photoLibrary) { image in
-                //self.image = Image(uiImage: image)
                 self.image = image.pngData()
                 imageIsSelected = true
             }
         }
-        .navigationTitle("Add Notes")
+        .navigationTitle(Constants.addNotes)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Button {
                     self.showImagePicker.toggle()
                 } label: {
-                    Image(systemName: "plus")
+                    Image(systemName: Constants.plus)
                 }
                 .background(imageIsSelected ? .green : .clear)
                 .clipShape(Capsule())
@@ -64,7 +63,7 @@ struct iNoteAdd: View {
                         }
                     }
                 } label: {
-                    Text("Save")
+                    Text(Constants.save)
                 }.disabled(title.isEmpty ? true : false)
             }
         }
@@ -75,18 +74,6 @@ struct iNoteAdd: View {
 struct iNoteAdd_Previews: PreviewProvider {
     static var previews: some View {
         iNoteAdd()
-    }
-}
-
-
-extension Binding where Value == String {
-    func max(_ limit: Int) -> Self {
-        if self.wrappedValue.count > limit {
-            DispatchQueue.main.async {
-                self.wrappedValue = String(self.wrappedValue.dropLast())
-            }
-        }
-        return self
     }
 }
 

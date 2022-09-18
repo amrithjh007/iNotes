@@ -15,7 +15,7 @@ class iNotesService: ObservableObject {
     @Published var notesList : [iNotesModel] = []
     
     func fetchNotes(){
-        guard let url = URL(string: "https://raw.githubusercontent.com/RishabhRaghunath/JustATest/master/notes") else { return }
+        guard let url = URL(string: Constants.url) else { return }
         URLSession.shared.dataTask(with: url){ (data, error, _) in
             guard let data = data else { return }
             let notes = try! JSONDecoder().decode([iNotesModel].self, from: data)
@@ -40,7 +40,7 @@ class iNotesService: ObservableObject {
     
     func getPropertyCount() -> Int {
         let moc = PersistenceController.shared.container.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Item")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.entity)
         let count = try! moc.count(for: fetchRequest)
         return count
     }
@@ -50,7 +50,7 @@ class iNotesService: ObservableObject {
         let timeInterval = TimeInterval(inputTime)
         let myNSDate = Date(timeIntervalSince1970: timeInterval)
         let dateFormatCoordinate = DateFormatter()
-        dateFormatCoordinate.dateFormat = "MMM d, YYYY"
+        dateFormatCoordinate.dateFormat = Constants.dateFormat
         let resultDate =  dateFormatCoordinate.string(from: myNSDate)
         return resultDate
     }
